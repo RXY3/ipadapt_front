@@ -379,18 +379,39 @@ const Information: React.FC = () => {
                       }
                       actions={[
                         liked[artwork.id] 
-                          ? <HeartFilled 
-                              style={{ color: '#ff4d4f' }} 
-                              onClick={() => handleLike(artwork.id)} 
-                            /> 
-                          : <HeartOutlined onClick={() => handleLike(artwork.id)} />,
-                        <CommentOutlined onClick={() => openArtworkDetail(artwork)} />,
+                          ? (
+                            <Badge count={artwork.likes} style={{ 
+                                backgroundColor: 'rgba(255, 77, 79, 0.6)',  // 背景透明
+                                boxShadow: 'none'               // 去掉默认的阴影
+                              }} size="small" offset={[0, 0]} overflowCount={999} >
+                              <HeartFilled 
+                                style={{ color: '#ff4d4f', fontSize: '18px'}} 
+                                onClick={() => handleLike(artwork.id)} 
+                              />
+                            </Badge>
+                          ) 
+                          : (
+                            <Badge count={artwork.likes} style={{ 
+                                  backgroundColor: 'rgba(255, 77, 79, 0.6)',  // 背景透明
+                                  boxShadow: 'none'               // 去掉默认的阴影
+                                }} size="small" offset={[0, 0]} overflowCount={999} >
+                              <HeartOutlined 
+                                style={{ fontSize: '18px' }} 
+                                onClick={() => handleLike(artwork.id)} 
+                              />
+                            </Badge>
+                          ),
+                      
+                        <Badge count={artwork.comments} size="small" offset={[0, 0]} overflowCount={999} style={{ backgroundColor: 'rgba(24, 144, 255, 0.6)', boxShadow: 'none' }}>
+                          <CommentOutlined style={{ fontSize: '18px' }} onClick={() => openArtworkDetail(artwork)} />
+                        </Badge>,
+                      
                         starred[artwork.id] 
                           ? <StarFilled 
-                              style={{ color: '#faad14' }} 
+                              style={{ color: '#faad14', fontSize: '18px'}} 
                               onClick={() => handleStar(artwork.id)} 
                             /> 
-                          : <StarOutlined onClick={() => handleStar(artwork.id)} />
+                          : <StarOutlined style={{ color: '#faad14', fontSize: '18px'}} onClick={() => handleStar(artwork.id)} />
                       ]}
                     >
                       <Meta
@@ -404,16 +425,8 @@ const Information: React.FC = () => {
                         title={artwork.title}
                         description={
                           <>
-                            <div>{artwork.author.name} · {formatDate(artwork.createdAt)}</div>
-                            <div>
-                              <Badge count={artwork.likes} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#ff4d4f' }}>
-                                <HeartOutlined />
-                              </Badge>
-                              <span style={{ marginRight: 12 }}></span>
-                              <Badge count={artwork.comments} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#1890ff' }}>
-                                <CommentOutlined />
-                              </Badge>
-                            </div>
+                            <div>{artwork.author.name}</div>
+                            <div>{formatDate(artwork.createdAt)}</div>
                           </>
                         }
                       />
@@ -447,18 +460,39 @@ const Information: React.FC = () => {
                       }
                       actions={[
                         liked[artwork.id] 
-                          ? <HeartFilled 
-                              style={{ color: '#ff4d4f' }} 
-                              onClick={() => handleLike(artwork.id)} 
-                            /> 
-                          : <HeartOutlined onClick={() => handleLike(artwork.id)} />,
-                        <CommentOutlined onClick={() => openArtworkDetail(artwork)} />,
+                          ? (
+                            <Badge count={artwork.likes} style={{ 
+                                backgroundColor: 'rgba(255, 77, 79, 0.6)',  // 背景透明
+                                boxShadow: 'none'               // 去掉默认的阴影
+                              }} size="small" offset={[0, 0]} overflowCount={999} >
+                              <HeartFilled 
+                                style={{ color: '#ff4d4f', fontSize: '18px'}} 
+                                onClick={() => handleLike(artwork.id)} 
+                              />
+                            </Badge>
+                          ) 
+                          : (
+                            <Badge count={artwork.likes} style={{ 
+                                  backgroundColor: 'rgba(255, 77, 79, 0.6)',  // 背景透明
+                                  boxShadow: 'none'               // 去掉默认的阴影
+                                }} size="small" offset={[0, 0]} overflowCount={999} >
+                              <HeartOutlined 
+                                style={{ fontSize: '18px' }} 
+                                onClick={() => handleLike(artwork.id)} 
+                              />
+                            </Badge>
+                          ),
+                      
+                        <Badge count={artwork.comments} size="small" offset={[0, 0]} overflowCount={999} style={{ backgroundColor: 'rgba(24, 144, 255, 0.6)', boxShadow: 'none' }}>
+                          <CommentOutlined style={{ fontSize: '18px' }} onClick={() => openArtworkDetail(artwork)} />
+                        </Badge>,
+                      
                         starred[artwork.id] 
                           ? <StarFilled 
-                              style={{ color: '#faad14' }} 
+                              style={{ color: '#faad14', fontSize: '18px'}} 
                               onClick={() => handleStar(artwork.id)} 
                             /> 
-                          : <StarOutlined onClick={() => handleStar(artwork.id)} />
+                          : <StarOutlined style={{ color: '#faad14', fontSize: '18px'}} onClick={() => handleStar(artwork.id)} />
                       ]}
                     >
                       <Meta
@@ -472,16 +506,8 @@ const Information: React.FC = () => {
                         title={artwork.title}
                         description={
                           <>
-                            <div>{artwork.author.name} · {formatDate(artwork.createdAt)}</div>
-                            <div>
-                              <Badge count={artwork.likes} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#ff4d4f' }}>
-                                <HeartOutlined />
-                              </Badge>
-                              <span style={{ marginRight: 12 }}></span>
-                              <Badge count={artwork.comments} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#1890ff' }}>
-                                <CommentOutlined />
-                              </Badge>
-                            </div>
+                            <div>{artwork.author.name}</div>
+                            <div>{formatDate(artwork.createdAt)}</div>
                           </>
                         }
                       />
@@ -510,42 +536,54 @@ const Information: React.FC = () => {
         {currentArtwork && (
           <div>
             <div style={{ padding: '24px' }}>
-              <div className={styles.detailHeader}>
-                <div className={styles.avatarContainer}>
-                  <Avatar 
-                    size={40} 
-                    src={currentArtwork.author.avatar} 
-                    onClick={() => viewUserDetail(currentArtwork.author)} 
-                    style={{ cursor: 'pointer' }}
-                  />
-                  <div>
-                    <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{currentArtwork.author.name}</div>
-                    <div style={{ color: '#999', fontSize: '12px' }}>{formatDate(currentArtwork.createdAt)}</div>
+              <div className={styles.detailHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar 
+                      size={40} 
+                      src={currentArtwork.author.avatar} 
+                      onClick={() => viewUserDetail(currentArtwork.author)} 
+                      style={{ cursor: 'pointer', marginRight: '12px' }}
+                    />
+                    <div>
+                      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{currentArtwork.author.name}</div>
+                      <div style={{ color: '#999', fontSize: '12px' }}>{formatDate(currentArtwork.createdAt)}</div>
+                    </div>
                   </div>
+
+                  <Button 
+                    type={followed[currentArtwork.author.id] ? "default" : "primary"} 
+                    size="middle" 
+                    icon={followed[currentArtwork.author.id] ? <CheckOutlined /> : null}
+                    onClick={() => handleFollow(currentArtwork.author.id)}
+                    style={{ marginLeft: '24px' }}
+                  >
+                    {followed[currentArtwork.author.id] ? '已关注' : '关注'}
+                  </Button>
                 </div>
-                <Button 
-                  type={followed[currentArtwork.author.id] ? "default" : "primary"} 
-                  size="large" 
-                  icon={followed[currentArtwork.author.id] ? <CheckOutlined /> : null}
-                  onClick={() => handleFollow(currentArtwork.author.id)}
-                >
-                  {followed[currentArtwork.author.id] ? '已关注' : '关注'}
-                </Button>
               </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <h2>{currentArtwork.title}</h2>
-                <p>{currentArtwork.description}</p>
-                <div style={{ marginTop: '8px' }}>
+
+              <div style={{ marginBottom: '32px', marginTop: '20px'}}>
+                <h2 style={{ fontSize: '24px', marginBottom: '12px', fontWeight: 600 }}>
+                  {currentArtwork.title}
+                </h2>
+
+                <p style={{ color: '#595959', lineHeight: '1.6', marginBottom: '16px' }}>
+                  {currentArtwork.description}
+                </p>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {currentArtwork.tags.map((tag, index) => (
-                    <span 
-                      key={index} 
-                      style={{ 
-                        background: '#f0f2f5', 
-                        padding: '2px 8px', 
-                        borderRadius: '4px', 
-                        marginRight: '8px',
-                        fontSize: '12px'
+                    <span
+                      key={index}
+                      style={{
+                        background: '#f5f5f5',
+                        padding: '4px 10px',
+                        borderRadius: '20px',
+                        fontSize: '13px',
+                        color: '#555',
+                        cursor: 'default',
+                        transition: 'all 0.3s',
                       }}
                     >
                       #{tag}
@@ -577,14 +615,15 @@ const Information: React.FC = () => {
                   </span>
                 </div>
                 
-                <div className={styles.actionButton}>
+                <div className={styles.actionButton} style = {{marginLeft: "20px"}}>
                   <CommentOutlined />
                   <span style={{ marginLeft: '8px' }}>{comments.length} 评论</span>
                 </div>
-                
+
                 <div 
                   className={styles.actionButton}
                   onClick={() => handleStar(currentArtwork.id)}
+                  style = {{marginLeft: "20px"}}
                 >
                   {starred[currentArtwork.id] ? (
                     <StarFilled style={{ color: '#faad14' }} />
@@ -596,16 +635,6 @@ const Information: React.FC = () => {
                       ? currentArtwork.stars + 1 
                       : currentArtwork.stars} 收藏
                   </span>
-                </div>
-                
-                <div className={styles.actionButton}>
-                  <ShareAltOutlined />
-                  <span style={{ marginLeft: '8px' }}>分享</span>
-                </div>
-                
-                <div className={styles.actionButton}>
-                  <EyeOutlined />
-                  <span style={{ marginLeft: '8px' }}>{currentArtwork.views} 浏览</span>
                 </div>
               </div>
               
@@ -625,7 +654,7 @@ const Information: React.FC = () => {
                       maxLength={200}
                       showCount
                     />
-                    <div style={{ marginTop: '8px', textAlign: 'right' }}>
+                    <div style={{ marginTop: '20px', textAlign: 'right' }}>
                       <Button 
                         type="primary" 
                         size="middle"
