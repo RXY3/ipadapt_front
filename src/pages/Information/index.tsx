@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Card, Row, Col, Button, Drawer, message, Avatar, Badge, Input, Spin, List, Modal } from 'antd';
-import { HeartOutlined, HeartFilled, CommentOutlined, StarOutlined, StarFilled, ShareAltOutlined, EyeOutlined, FireOutlined, ClockCircleOutlined, TeamOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled, CommentOutlined, StarOutlined, StarFilled, ShareAltOutlined, EyeOutlined, FireOutlined, ClockCircleOutlined, TeamOutlined, CheckOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
 
 const { TabPane } = Tabs;
 const { Meta } = Card;
 const { TextArea } = Input;
-
-
 
 // 样式定义
 const useStyles = createStyles(({ token }) => ({
@@ -100,6 +98,7 @@ const Information: React.FC = () => {
   const [newComment, setNewComment] = useState('');
   const [liked, setLiked] = useState({});
   const [starred, setStarred] = useState({});
+  const [followed, setFollowed] = useState({});  // 添加关注状态
   const [userDetailVisible, setUserDetailVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [userArtworks, setUserArtworks] = useState([]);
@@ -125,15 +124,42 @@ const Information: React.FC = () => {
         filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case 'following':
-        // 模拟关注的作者的作品，这里简单取前5个作者的作品
-        const followingAuthors = artworks.slice(0, 5).map(art => art.author.id);
-        filtered = filtered.filter(art => followingAuthors.includes(art.author.id));
+        // 获取已关注的作者ID列表
+        const followedUserIds = Object.keys(followed).filter(id => followed[id]);
+        
+        if (followedUserIds.length === 0) {
+          // 如果没有关注的作者，则使用默认的模拟数据
+          const followingAuthors = artworks.slice(0, 5).map(art => art.author.id);
+          filtered = filtered.filter(art => followingAuthors.includes(art.author.id));
+        } else {
+          // 如果有已关注的作者，则显示他们的作品
+          filtered = filtered.filter(art => followedUserIds.includes(art.author.id));
+        }
         break;
       default:
         break;
     }
     
     setFilteredArtworks(filtered);
+  };
+
+  // 处理关注/取消关注
+  const handleFollow = (userId) => {
+    setFollowed(prev => {
+      const newFollowed = { ...prev, [userId]: !prev[userId] };
+      return newFollowed;
+    });
+    
+    // 使用setTimeout确保能获取到最新状态
+    setTimeout(() => {
+      const isFollowed = !followed[userId];
+      message.success(isFollowed ? '关注成功' : '已取消关注');
+      
+      // 如果当前在"关注"标签，需要重新过滤作品
+      if (activeTab === 'following') {
+        filterArtworks('following');
+      }
+    }, 100);
   };
 
   // 打开作品详情
@@ -320,15 +346,6 @@ const Information: React.FC = () => {
                           <>
                             <div>{artwork.author.name}</div>
                             <div>{formatDate(artwork.createdAt)}</div>
-                            {/* <div>
-                              <Badge count={artwork.likes} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#ff4d4f' }}>
-                                <HeartOutlined />
-                              </Badge>
-                              <span style={{ marginRight: 12 }}></span>
-                              <Badge count={artwork.comments} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#1890ff' }}>
-                                <CommentOutlined />
-                              </Badge>
-                            </div> */}
                           </>
                         }
                       />
@@ -506,8 +523,13 @@ const Information: React.FC = () => {
                     <div style={{ color: '#999', fontSize: '12px' }}>{formatDate(currentArtwork.createdAt)}</div>
                   </div>
                 </div>
-                <Button type="primary" onClick={() => viewUserDetail(currentArtwork.author)}>
-                  关注
+                <Button 
+                  type={followed[currentArtwork.author.id] ? "default" : "primary"} 
+                  size="large" 
+                  icon={followed[currentArtwork.author.id] ? <CheckOutlined /> : null}
+                  onClick={() => handleFollow(currentArtwork.author.id)}
+                >
+                  {followed[currentArtwork.author.id] ? '已关注' : '关注'}
                 </Button>
               </div>
               
@@ -604,7 +626,11 @@ const Information: React.FC = () => {
                       showCount
                     />
                     <div style={{ marginTop: '8px', textAlign: 'right' }}>
-                      <Button type="primary" onClick={submitComment}>
+                      <Button 
+                        type="primary" 
+                        size="middle"
+                        onClick={submitComment}
+                      >
                         发布评论
                       </Button>
                     </div>
@@ -651,7 +677,13 @@ const Information: React.FC = () => {
               <Avatar size={64} src={currentUser.avatar} />
               <div style={{ marginLeft: '16px' }}>
                 <h2 style={{ marginBottom: '4px' }}>{currentUser.name}</h2>
-                <Button type="primary">关注</Button>
+                <Button 
+                  type={followed[currentUser.id] ? "default" : "primary"}
+                  icon={followed[currentUser.id] ? <CheckOutlined /> : null}
+                  onClick={() => handleFollow(currentUser.id)}
+                >
+                  {followed[currentUser.id] ? '已关注' : '关注'}
+                </Button>
               </div>
             </div>
             
