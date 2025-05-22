@@ -7,6 +7,8 @@ const { TabPane } = Tabs;
 const { Meta } = Card;
 const { TextArea } = Input;
 
+
+
 // 样式定义
 const useStyles = createStyles(({ token }) => ({
   container: {
@@ -270,18 +272,39 @@ const Information: React.FC = () => {
                       }
                       actions={[
                         liked[artwork.id] 
-                          ? <HeartFilled 
-                              style={{ color: '#ff4d4f' }} 
-                              onClick={() => handleLike(artwork.id)} 
-                            /> 
-                          : <HeartOutlined onClick={() => handleLike(artwork.id)} />,
-                        <CommentOutlined onClick={() => openArtworkDetail(artwork)} />,
+                          ? (
+                            <Badge count={artwork.likes} style={{ 
+                                backgroundColor: 'rgba(255, 77, 79, 0.6)',  // 背景透明
+                                boxShadow: 'none'               // 去掉默认的阴影
+                              }} size="small" offset={[0, 0]} overflowCount={999} >
+                              <HeartFilled 
+                                style={{ color: '#ff4d4f', fontSize: '18px'}} 
+                                onClick={() => handleLike(artwork.id)} 
+                              />
+                            </Badge>
+                          ) 
+                          : (
+                            <Badge count={artwork.likes} style={{ 
+                                  backgroundColor: 'rgba(255, 77, 79, 0.6)',  // 背景透明
+                                  boxShadow: 'none'               // 去掉默认的阴影
+                                }} size="small" offset={[0, 0]} overflowCount={999} >
+                              <HeartOutlined 
+                                style={{ fontSize: '18px' }} 
+                                onClick={() => handleLike(artwork.id)} 
+                              />
+                            </Badge>
+                          ),
+                      
+                        <Badge count={artwork.comments} size="small" offset={[0, 0]} overflowCount={999} style={{ backgroundColor: 'rgba(24, 144, 255, 0.6)', boxShadow: 'none' }}>
+                          <CommentOutlined style={{ fontSize: '18px' }} onClick={() => openArtworkDetail(artwork)} />
+                        </Badge>,
+                      
                         starred[artwork.id] 
                           ? <StarFilled 
-                              style={{ color: '#faad14' }} 
+                              style={{ color: '#faad14', fontSize: '18px'}} 
                               onClick={() => handleStar(artwork.id)} 
                             /> 
-                          : <StarOutlined onClick={() => handleStar(artwork.id)} />
+                          : <StarOutlined style={{ color: '#faad14', fontSize: '18px'}} onClick={() => handleStar(artwork.id)} />
                       ]}
                     >
                       <Meta
@@ -295,8 +318,9 @@ const Information: React.FC = () => {
                         title={artwork.title}
                         description={
                           <>
-                            <div>{artwork.author.name} · {formatDate(artwork.createdAt)}</div>
-                            <div>
+                            <div>{artwork.author.name}</div>
+                            <div>{formatDate(artwork.createdAt)}</div>
+                            {/* <div>
                               <Badge count={artwork.likes} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#ff4d4f' }}>
                                 <HeartOutlined />
                               </Badge>
@@ -304,7 +328,7 @@ const Information: React.FC = () => {
                               <Badge count={artwork.comments} size="small" offset={[2, 0]} overflowCount={999} style={{ backgroundColor: '#1890ff' }}>
                                 <CommentOutlined />
                               </Badge>
-                            </div>
+                            </div> */}
                           </>
                         }
                       />
